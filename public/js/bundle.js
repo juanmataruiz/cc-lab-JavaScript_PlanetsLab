@@ -78,7 +78,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const planetsData = __webpack_require__(/*! ./data/planets.js */ \"./src/data/planets.js\");\nconst SolarSystem = __webpack_require__(/*! ./models/solar_system.js */ \"./src/models/solar_system.js\");\nconst SelectPlanet = __webpack_require__(/*! ./views/select_planet.js */ \"./src/views/select_planet.js\")\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  const planetsDataModel = new SolarSystem(planetsData);\n  planetsDataModel.bindEvents();\n\n  const planetMenuItems = document.querySelectorAll('.planet-menu-item');\n  const selectPlanet = new SelectPlanet(planetMenuItems);\n  selectPlanet.bindEvents();\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
+eval("const planetsData = __webpack_require__(/*! ./data/planets.js */ \"./src/data/planets.js\");\nconst SolarSystem = __webpack_require__(/*! ./models/solar_system.js */ \"./src/models/solar_system.js\");\nconst SelectPlanet = __webpack_require__(/*! ./views/select_planet.js */ \"./src/views/select_planet.js\")\nconst DisplayPlanet = __webpack_require__(/*! ./views/display_planet.js */ \"./src/views/display_planet.js\")\n\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  const planetsDataModel = new SolarSystem(planetsData);\n  planetsDataModel.bindEvents();\n\n  const planetMenuItems = document.querySelectorAll('.planet-menu-item');\n  const selectPlanet = new SelectPlanet(planetMenuItems);\n  selectPlanet.bindEvents();\n\n  const planetDetails = document.querySelector('.planet-details');\n  const displayPlanet = new DisplayPlanet(planetDetails);\n  displayPlanet.bindEvents();\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
 
 /***/ }),
 
@@ -111,7 +111,18 @@ eval("const PubSub = {\n    publish: function(channel, payload){\n        const 
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\");\n\nconst SolarSystem = function(planets) {\n  this.planets = planets;\n};\n\nSolarSystem.prototype.bindEvents = function () {\n  PubSub.subscribe('SelectPlanet:planetName', (event) => {\n    const planetName = event.detail;\n    const planet = this.planets.find((currentPlanet) => {\n      return currentPlanet.name === planetName;\n    })\n    console.log(planet);\n  })\n\n\n\n\n};\n\nmodule.exports = SolarSystem;\n\n\n//# sourceURL=webpack:///./src/models/solar_system.js?");
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\");\n\nconst SolarSystem = function(planets) {\n  this.planets = planets;\n};\n\nSolarSystem.prototype.bindEvents = function () {\n  PubSub.subscribe('SelectPlanet:planetName', (event) => {\n    const planetName = event.detail;\n    const planet = this.planets.find((currentPlanet) => {\n      return currentPlanet.name === planetName;\n    })\n\n    PubSub.publish('SolarSystem:planetObject', planet);\n  })\n\n\n\n\n};\n\nmodule.exports = SolarSystem;\n\n\n//# sourceURL=webpack:///./src/models/solar_system.js?");
+
+/***/ }),
+
+/***/ "./src/views/display_planet.js":
+/*!*************************************!*\
+  !*** ./src/views/display_planet.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\");\n\nconst DisplayPlanet = function (displayElement) {\n  this.displayElement = displayElement;\n};\n\nDisplayPlanet.prototype.bindEvents = function () {\n  PubSub.subscribe('SolarSystem:planetObject', (event) => {\n    const planet = event.detail;\n    this.render(planet);\n  })\n};\n\nDisplayPlanet.prototype.render = function (planet) {\n  /*\n  <table>\n    <tr>\n      <td>Label</td>\n      <td>Data</td>\n    </tr>\n  </table>\n  */\n\n  this.displayElement.innerHTML = '';\n\n  const table = document.createElement('table')\n  for (const key in planet) {\n    const row = document.createElement('tr');\n\n    const label = document.createElement('td');\n    label.textContent = key;\n\n    const data = document.createElement('td');\n    data.textContent = planet[key];\n\n    row.appendChild(label)\n    row.appendChild(data)\n    table.appendChild(row)\n  }\n\n  this.displayElement.appendChild(table)\n\n};\n\nmodule.exports = DisplayPlanet;\n\n\n//# sourceURL=webpack:///./src/views/display_planet.js?");
 
 /***/ }),
 

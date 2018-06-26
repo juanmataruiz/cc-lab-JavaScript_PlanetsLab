@@ -10,7 +10,8 @@ SolarSystem.prototype.bindEvents = function () {
     const planet = this.planets.find((currentPlanet) => {
       return currentPlanet.name === planetName;
     })
-    console.log(planet);
+
+    PubSub.publish('SolarSystem:planetObject', planet);
   })
 
 
