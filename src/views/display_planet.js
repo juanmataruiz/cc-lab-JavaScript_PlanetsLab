@@ -25,6 +25,7 @@ DisplayPlanet.prototype.render = function (planet) {
 
   const table = document.createElement('table')
   for (const key in planet) {
+    if (key =='image') { continue }
     const row = document.createElement('tr');
 
     const label = document.createElement('td');
@@ -39,6 +40,14 @@ DisplayPlanet.prototype.render = function (planet) {
   }
 
   this.displayElement.appendChild(table)
+
+  // const image = document.createElement('img')
+  // image.src = planet.image;
+
+  // this.displayElement.appendChild(image);
+
+  const body = document.querySelector('body');
+  body.style.setProperty('background-image', `url(${planet.image}`);
 
 };
 

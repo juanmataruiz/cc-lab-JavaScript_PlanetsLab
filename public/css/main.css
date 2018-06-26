@@ -4,4 +4,33 @@ table {
 
 td {
   background-color: #ddd;
+  padding: 1px 1rem;
+}
+
+.planet-menu-item {
+  background-color: lightsteelblue;
+  width: 5rem;
+  list-style-type: none;
+  margin-right: 10px;
+  padding: 1px 1rem;
+}
+
+.planet-menu-item:hover {
+  background-color: hotpink;
+}
+
+main {
+  display: flex;
+  flex-flow : row nowrap;
+  align-items: center;
+}
+
+body {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: black;
+  background-position: right;
+  color: white;
+  width: 100vw;
+  height: 100vh;
 }
