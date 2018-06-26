@@ -78,7 +78,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const planetsData = __webpack_require__(/*! ./data/planets.js */ \"./src/data/planets.js\");\nconst SolarSystem = __webpack_require__(/*! ./models/solar_system.js */ \"./src/models/solar_system.js\");\nconst SelectPlanet = __webpack_require__(/*! ./views/select_planet.js */ \"./src/views/select_planet.js\")\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  const planetsDataModel = new SolarSystem(planetsData);\n  console.log(planetsDataModel.planets);\n\n  const planetMenuItems = document.querySelectorAll('.planet-menu-item');\n  const selectPlanet = new SelectPlanet(planetMenuItems);\n  selectPlanet.bindEvents();\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
+eval("const planetsData = __webpack_require__(/*! ./data/planets.js */ \"./src/data/planets.js\");\nconst SolarSystem = __webpack_require__(/*! ./models/solar_system.js */ \"./src/models/solar_system.js\");\nconst SelectPlanet = __webpack_require__(/*! ./views/select_planet.js */ \"./src/views/select_planet.js\")\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  const planetsDataModel = new SolarSystem(planetsData);\n  planetsDataModel.bindEvents();\n\n  const planetMenuItems = document.querySelectorAll('.planet-menu-item');\n  const selectPlanet = new SelectPlanet(planetMenuItems);\n  selectPlanet.bindEvents();\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
 
 /***/ }),
 
@@ -109,9 +109,9 @@ eval("const PubSub = {\n    publish: function(channel, payload){\n        const 
   !*** ./src/models/solar_system.js ***!
   \************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-eval("const SolarSystem = function(planets) {\n  this.planets = planets;\n};\n\nmodule.exports = SolarSystem;\n\n\n//# sourceURL=webpack:///./src/models/solar_system.js?");
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\");\n\nconst SolarSystem = function(planets) {\n  this.planets = planets;\n};\n\nSolarSystem.prototype.bindEvents = function () {\n  PubSub.subscribe('SelectPlanet:planetName', (event) => {\n    const planetName = event.detail;\n    const planet = this.planets.find((currentPlanet) => {\n      return currentPlanet.name === planetName;\n    })\n    console.log(planet);\n  })\n\n\n\n\n};\n\nmodule.exports = SolarSystem;\n\n\n//# sourceURL=webpack:///./src/models/solar_system.js?");
 
 /***/ }),
 
